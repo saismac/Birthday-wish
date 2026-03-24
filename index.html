@@ -8,7 +8,7 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: linear-gradient(to top, #000000, #1a1a1a);
+  background: black;
   font-family: Arial, sans-serif;
 }
 
@@ -16,27 +16,22 @@ body {
 h1 {
   position: absolute;
   width: 100%;
-  top: 20%;
+  top: 35%;
   text-align: center;
   color: white;
-  font-size: 2.8em;
-  z-index: 3;
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from { text-shadow: 0 0 10px #fff; }
-  to { text-shadow: 0 0 25px #ff00ff, 0 0 40px #00ffff; }
+  font-size: 2.5em;
+  z-index: 10; /* VERY IMPORTANT */
 }
 
 /* BALLOONS */
 .balloon {
-  width: 50px;
-  height: 70px;
+  width: 40px;
+  height: 60px;
   border-radius: 50%;
   position: absolute;
   bottom: -100px;
-  animation: float 8s linear infinite;
+  animation: float 7s linear infinite;
+  z-index: 5;
 }
 
 @keyframes float {
@@ -47,19 +42,19 @@ h1 {
 /* CAKE */
 .cake {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 100px;
-  z-index: 3;
+  font-size: 80px;
+  z-index: 10;
 }
 
 /* FIREWORKS */
 canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 1; /* BEHIND EVERYTHING */
 }
 </style>
 </head>
@@ -68,16 +63,14 @@ canvas {
 
 <h1>🎉 Happy Birthday to you my best friend Divya Reddy 🎂</h1>
 
-<!-- CAKE -->
 <div class="cake">🎂</div>
 
 <!-- BALLOONS -->
-<div class="balloon" style="left:10%; background:#ff4d4d;"></div>
-<div class="balloon" style="left:25%; background:#4da6ff;"></div>
-<div class="balloon" style="left:40%; background:#66ff66;"></div>
-<div class="balloon" style="left:60%; background:#ffcc00;"></div>
-<div class="balloon" style="left:75%; background:#ff66cc;"></div>
-<div class="balloon" style="left:90%; background:#ff9933;"></div>
+<div class="balloon" style="left:10%; background:red;"></div>
+<div class="balloon" style="left:25%; background:blue;"></div>
+<div class="balloon" style="left:40%; background:green;"></div>
+<div class="balloon" style="left:60%; background:yellow;"></div>
+<div class="balloon" style="left:75%; background:pink;"></div>
 
 <canvas id="fireworks"></canvas>
 
@@ -94,14 +87,14 @@ function createFirework() {
   let x = Math.random() * canvas.width;
   let y = Math.random() * canvas.height / 2;
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 60; i++) {
     particles.push({
       x: x,
       y: y,
       radius: 2,
-      color: `hsl(${Math.random()*360},100%,50%)`,
-      speedX: (Math.random() - 0.5) * 7,
-      speedY: (Math.random() - 0.5) * 7,
+      color: "hsl(" + Math.random()*360 + ",100%,50%)",
+      speedX: (Math.random() - 0.5) * 6,
+      speedY: (Math.random() - 0.5) * 6,
       life: 100
     });
   }
@@ -111,7 +104,8 @@ function animate() {
   ctx.fillStyle = "rgba(0,0,0,0.2)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  particles.forEach((p, index) => {
+  for (let i = 0; i < particles.length; i++) {
+    let p = particles[i];
     p.x += p.speedX;
     p.y += p.speedY;
     p.life--;
@@ -122,9 +116,10 @@ function animate() {
     ctx.fill();
 
     if (p.life <= 0) {
-      particles.splice(index, 1);
+      particles.splice(i, 1);
+      i--;
     }
-  });
+  }
 
   requestAnimationFrame(animate);
 }
