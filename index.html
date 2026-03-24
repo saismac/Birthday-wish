@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Divya 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to top, #ff9a9e, #fad0c4);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      color: white;
+    }
+
+    h1 {
+      margin-top: 20%;
+      font-size: 3em;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff; }
+      to { text-shadow: 0 0 20px #ff0, 0 0 30px #ff69b4; }
+    }
+
+    .balloon {
+      width: 50px;
+      height: 70px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+      bottom: -100px;
+      animation: float 6s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-120vh); }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎉 Happy Birthday to you my best friend Divya Reddy 🎂</h1>
+
+<!-- Balloons -->
+<div class="balloon" style="left:10%; background:#ff4d4d;"></div>
+<div class="balloon" style="left:30%; background:#4da6ff;"></div>
+<div class="balloon" style="left:50%; background:#66ff66;"></div>
+<div class="balloon" style="left:70%; background:#ffcc00;"></div>
+<div class="balloon" style="left:90%; background:#ff66cc;"></div>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let particles = [];
+
+  function createFirework() {
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height / 2;
+
+    for (let i = 0; i < 50; i++) {
+      particles.push({
+        x: x,
+        y: y,
+        radius: 2,
+        color: `hsl(${Math.random()*360},100%,50%)`,
+        speedX: (Math.random() - 0.5) * 6,
+        speedY: (Math.random() - 0.5) * 6
+      });
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.radius *= 0.96;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      if (p.radius < 0.5) {
+        particles.splice(index, 1);
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  setInterval(createFirework, 800);
+  animate();
+</script>
+
+</body>
+</html>
